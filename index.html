@@ -2,180 +2,150 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RBD Chatbot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RBD ChatBot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to bottom right, #2b2e4a, #e84545);
-      color: white;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #0f0f0f, #1a1a1a);
+      color: #f0f0f0;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
-    }
-
-    header {
-      background-color: #903749;
-      padding: 20px;
-      text-align: center;
-      font-size: 2em;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
-    main {
-      flex: 1;
-      display: flex;
+      height: 100vh;
       justify-content: center;
       align-items: center;
-      padding: 30px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 2rem;
     }
 
     .chat-container {
-      background-color: #1a1a2e;
-      border-radius: 15px;
-      width: 100%;
+      width: 90%;
       max-width: 500px;
-      height: 600px;
+      height: 80vh;
+      background: #121212;
+      border-radius: 16px;
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
     }
 
     .chat-messages {
       flex: 1;
-      padding: 20px;
+      padding: 15px;
       overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
     }
 
     .message {
-      padding: 12px 16px;
-      border-radius: 12px;
-      max-width: 80%;
-      word-wrap: break-word;
-      animation: fadeIn 0.4s ease;
+      margin: 10px 0;
+      line-height: 1.4;
     }
 
-    .user-message {
-      align-self: flex-end;
-      background-color: #53354a;
+    .user {
+      text-align: right;
+      color: #00ffff;
     }
 
-    .bot-message {
-      align-self: flex-start;
-      background-color: #6d597a;
+    .bot {
+      text-align: left;
+      color: #ffdf00;
     }
 
     .chat-input {
       display: flex;
+      padding: 10px;
+      background: #1e1e1e;
       border-top: 1px solid #333;
     }
 
     .chat-input input {
       flex: 1;
-      padding: 15px;
+      padding: 10px;
       border: none;
+      border-radius: 8px;
       outline: none;
-      background: #222;
+      background: #2a2a2a;
       color: white;
-      font-size: 16px;
     }
 
     .chat-input button {
-      padding: 15px 20px;
-      background: #e84545;
-      color: white;
+      background: #00ffff;
+      color: #121212;
       border: none;
+      padding: 10px 16px;
+      margin-left: 8px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: background 0.2s ease;
+      transition: background 0.3s ease;
     }
 
     .chat-input button:hover {
-      background: #ff2e2e;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    footer {
-      text-align: center;
-      padding: 15px;
-      font-size: 0.9em;
-      background-color: #903749;
+      background: #00cccc;
     }
   </style>
 </head>
 <body>
-  <header>
-    RBD Chatbot
-  </header>
-  <main>
-    <div class="chat-container">
-      <div class="chat-messages" id="chat">
-        <div class="bot-message message">Hi! I’m RBD Bot. How can I help you today?</div>
-      </div>
-      <div class="chat-input">
-        <input type="text" id="userInput" placeholder="Type your message..." />
-        <button onclick="sendMessage()">Send</button>
-      </div>
+
+  <h1>💬 RBD ChatBot</h1>
+  <div class="chat-container">
+    <div class="chat-messages" id="chat">
+      <div class="message bot">Hello! I'm RBD ChatBot. How can I assist you today?</div>
     </div>
-  </main>
-  <footer>
-    &copy; 2025 RBD. All rights reserved.
-  </footer>
+    <div class="chat-input">
+      <input type="text" id="messageInput" placeholder="Type your message..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
 
   <script>
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('messageInput');
+
+    input.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+
     function sendMessage() {
-      const input = document.getElementById('userInput');
       const msg = input.value.trim();
-      if (msg === '') return;
-
-      const chat = document.getElementById('chat');
-
+      if (!msg) return;
+      
       const userMsg = document.createElement('div');
-      userMsg.className = 'user-message message';
+      userMsg.className = 'message user';
       userMsg.textContent = msg;
       chat.appendChild(userMsg);
 
       input.value = '';
+      chat.scrollTop = chat.scrollHeight;
 
       setTimeout(() => {
         const botMsg = document.createElement('div');
-        botMsg.className = 'bot-message message';
-        botMsg.textContent = getBotReply(msg);
+        botMsg.className = 'message bot';
+        botMsg.textContent = generateReply(msg);
         chat.appendChild(botMsg);
         chat.scrollTop = chat.scrollHeight;
       }, 600);
-
-      chat.scrollTop = chat.scrollHeight;
     }
 
-    function getBotReply(message) {
-      // Simple hardcoded replies for demonstration
-      const lower = message.toLowerCase();
-      if (lower.includes('hello') || lower.includes('hi')) {
-        return "Hello! 😊 How can I assist you?";
-      } else if (lower.includes('help')) {
-        return "Sure! Let me know what you need help with.";
-      } else if (lower.includes('who are you')) {
-        return "I'm RBD Bot, your friendly assistant!";
-      } else {
-        return "I'm still learning. Can you rephrase that?";
-      }
+    function generateReply(input) {
+      const lowercase = input.toLowerCase();
+      if (lowercase.includes('hi') || lowercase.includes('hello')) return "Hi there! 👋";
+      if (lowercase.includes('your name')) return "I'm RBD ChatBot, your assistant!";
+      if (lowercase.includes('how are you')) return "I'm just code, but thanks for asking!";
+      return "I'm still learning. Try asking something else!";
     }
   </script>
+
 </body>
 </html>
