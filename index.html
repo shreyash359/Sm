@@ -1,146 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RBD ChatBot</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
       font-family: 'Orbitron', sans-serif;
-      background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
-      color: white;
+      color: #fff;
       overflow-x: hidden;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      background: #111;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      color: #0ff;
+      text-shadow: 0 0 10px #0ff;
     }
 
     nav {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background-color: rgba(0,0,0,0.3);
-      backdrop-filter: blur(8px);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      justify-content: center;
+      background-color: #181818;
+      padding: 10px 0;
+      border-bottom: 1px solid #333;
     }
 
     nav a {
-      color: white;
+      color: #ccc;
       text-decoration: none;
-      margin: 0 1rem;
+      margin: 0 15px;
       transition: color 0.3s;
     }
 
     nav a:hover {
-      color: #00eaff;
+      color: #0ff;
     }
 
     .hero {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
       text-align: center;
-      background-image: url('https://images.unsplash.com/photo-1686344777431-7b6b447d3f9e?auto=format&fit=crop&w=1500&q=80');
-      background-size: cover;
-      background-position: center;
-      position: relative;
+      padding: 80px 20px;
+      background: linear-gradient(to top, #0f0f0f, #1f1f1f);
     }
 
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      backdrop-filter: blur(4px);
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 700px;
-    }
-
-    h1 {
+    .hero h2 {
       font-size: 3rem;
-      margin-bottom: 1rem;
-      color: #00eaff;
+      margin-bottom: 20px;
+      color: #0ff;
     }
 
-    p {
-      font-size: 1.3rem;
-      line-height: 1.6;
+    .hero p {
+      font-size: 1.2rem;
+      color: #aaa;
+      margin-bottom: 30px;
     }
 
-    .chatbot-container {
-      max-width: 900px;
-      margin: 3rem auto;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    .chat-container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #222;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
     }
 
     iframe {
       width: 100%;
-      height: 600px;
+      height: 500px;
       border: none;
       border-radius: 10px;
     }
 
     footer {
+      padding: 20px;
       text-align: center;
-      padding: 2rem;
-      background-color: rgba(0, 0, 0, 0.2);
+      color: #777;
+      background-color: #111;
+      margin-top: 40px;
     }
 
-    footer a {
-      color: #00eaff;
-      margin: 0 1rem;
+    .links {
+      margin-top: 10px;
+    }
+
+    .links a {
+      color: #0ff;
+      margin: 0 10px;
       text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
+      font-size: 0.9rem;
     }
   </style>
 </head>
+
 <body>
+  <header>
+    <h1>RBD ChatBot</h1>
+  </header>
 
   <nav>
-    <div><strong>RBD ChatBot</strong></div>
-    <div>
-      <a href="#home">Home</a>
-      <a href="#terms">Terms</a>
-      <a href="#privacy">Privacy</a>
-      <a href="#reviews">Reviews</a>
-      <a href="#chatbot">Chat</a>
-    </div>
+    <a href="#">Home</a>
+    <a href="#features">Features</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#terms">Terms & Conditions</a>
+    <a href="#contact">Contact</a>
   </nav>
 
-  <section class="hero" id="home">
-    <div class="hero-content">
-      <h1>Talk Smarter with RBD ChatBot</h1>
-      <p>Experience the future of AI-powered chat. Fast, smart, and built for you.</p>
-    </div>
-  </section>
+  <div class="hero">
+    <h2>Welcome to Your Next-Gen AI Assistant</h2>
+    <p>Experience a conversational AI interface like never before. Powered by advanced tech and stunning design.</p>
+  </div>
 
-  <section class="chatbot-container" id="chatbot">
-    <h2 style="text-align:center; color:#00eaff;">Live ChatBot</h2>
-    <iframe src="https://rbdchatbot.netlify.app/" title="RBD ChatBot"></iframe>
-  </section>
+  <div class="chat-container">
+    <!-- Embed Chatbot (non-floating) -->
+    <iframe src="https://www.tidio.com/talk/yprjxymdqktq74xxx5lokq9zkds8b3bm" allow="microphone; camera"></iframe>
+  </div>
 
   <footer>
-    <p>&copy; 2025 RBD. All rights reserved.</p>
-    <a href="#terms">Terms & Conditions</a>
-    <a href="#privacy">Privacy Policy</a>
-    <a href="#reviews">Reviews</a>
+    <p>&copy; 2025 RBD Technologies. All rights reserved.</p>
+    <div class="links">
+      <a href="#terms">Terms & Conditions</a>
+      <a href="#privacy">Privacy Policy</a>
+      <a href="#reviews">User Reviews</a>
+    </div>
   </footer>
-
 </body>
+
 </html>
