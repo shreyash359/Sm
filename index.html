@@ -1,151 +1,149 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RBD ChatBot</title>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RBD AI Chatbot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Outfit', sans-serif;
-    }
-
     body {
-      background: radial-gradient(circle at top, #0f0f0f, #1a1a1a);
-      color: #f0f0f0;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top, #0f0f0f 10%, #121212 90%);
+      color: #fff;
       display: flex;
       flex-direction: column;
-      height: 100vh;
-      justify-content: center;
       align-items: center;
-    }
+      justify-content: center;
+      height: 100vh;
+    }.chat-container {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.2);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
 
-    h1 {
-      margin-bottom: 10px;
-      font-size: 2rem;
-    }
+.chat-header {
+  padding: 20px;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  background: linear-gradient(to right, #00ffc3, #007cff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-    .chat-container {
-      width: 90%;
-      max-width: 500px;
-      height: 80vh;
-      background: #121212;
-      border-radius: 16px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-    }
+.chat-box {
+  padding: 20px;
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
-    .chat-messages {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-    }
+.message {
+  padding: 12px 16px;
+  border-radius: 16px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
 
-    .message {
-      margin: 10px 0;
-      line-height: 1.4;
-    }
+.user {
+  align-self: flex-end;
+  background: #00ffc3;
+  color: #000;
+}
 
-    .user {
-      text-align: right;
-      color: #00ffff;
-    }
+.bot {
+  align-self: flex-start;
+  background: #222;
+  border: 1px solid #00ffc3;
+}
 
-    .bot {
-      text-align: left;
-      color: #ffdf00;
-    }
+.input-area {
+  display: flex;
+  padding: 12px;
+  background: #111;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-    .chat-input {
-      display: flex;
-      padding: 10px;
-      background: #1e1e1e;
-      border-top: 1px solid #333;
-    }
+input {
+  flex-grow: 1;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
+  background: #1a1a1a;
+  color: #fff;
+}
 
-    .chat-input input {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      outline: none;
-      background: #2a2a2a;
-      color: white;
-    }
+button {
+  margin-left: 10px;
+  padding: 10px 18px;
+  background: #00ffc3;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
 
-    .chat-input button {
-      background: #00ffff;
-      color: #121212;
-      border: none;
-      padding: 10px 16px;
-      margin-left: 8px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
+button:hover {
+  background: #00d2a8;
+}
 
-    .chat-input button:hover {
-      background: #00cccc;
-    }
   </style>
-</head>
-<body>
-
-  <h1>💬 RBD ChatBot</h1>
+</head><body>
   <div class="chat-container">
-    <div class="chat-messages" id="chat">
-      <div class="message bot">Hello! I'm RBD ChatBot. How can I assist you today?</div>
+    <div class="chat-header">🤖 RBD Chatbot</div>
+    <div class="chat-box" id="chat-box">
+      <div class="message bot">Hello! I'm your AI assistant trained by Master Shreyash. Ask me anything!</div>
     </div>
-    <div class="chat-input">
-      <input type="text" id="messageInput" placeholder="Type your message..." />
+    <div class="input-area">
+      <input type="text" id="user-input" placeholder="Type your message...">
       <button onclick="sendMessage()">Send</button>
     </div>
-  </div>
+  </div>  <script>
+    const chatBox = document.getElementById("chat-box");
+    const userInput = document.getElementById("user-input");
 
-  <script>
-    const chat = document.getElementById('chat');
-    const input = document.getElementById('messageInput');
-
-    input.addEventListener("keypress", function (e) {
-      if (e.key === "Enter") {
-        sendMessage();
-      }
-    });
+    const replies = {
+      "who created you": "I was created by the genius Master Shreyash. 👑",
+      "who is your master": "My master is the great Shreyash, the visionary behind RBD. 🚀",
+      "what is rbd": "RBD stands for Raise Above Daily – a movement led by Master Shreyash.",
+      "what is your name": "I'm RBD Bot, your assistant. Ask me anything!",
+      "help me learn html": "Sure! You can learn HTML from [W3Schools](https://www.w3schools.com/html/) or [MDN HTML Guide](https://developer.mozilla.org/en-US/docs/Web/HTML)",
+      "how to start coding": "Start with HTML, CSS and JavaScript. FreeCodeCamp (https://www.freecodecamp.org/) is a great place to begin!",
+      "hi": "Hello there! 😊 How can I help you today?",
+      "hello": "Hey! I'm here to assist you."
+    };
 
     function sendMessage() {
-      const msg = input.value.trim();
-      if (!msg) return;
-      
-      const userMsg = document.createElement('div');
-      userMsg.className = 'message user';
-      userMsg.textContent = msg;
-      chat.appendChild(userMsg);
+      const text = userInput.value.trim().toLowerCase();
+      if (!text) return;
 
-      input.value = '';
-      chat.scrollTop = chat.scrollHeight;
+      // User message
+      const userMsg = document.createElement("div");
+      userMsg.className = "message user";
+      userMsg.innerText = userInput.value;
+      chatBox.appendChild(userMsg);
 
-      setTimeout(() => {
-        const botMsg = document.createElement('div');
-        botMsg.className = 'message bot';
-        botMsg.textContent = generateReply(msg);
-        chat.appendChild(botMsg);
-        chat.scrollTop = chat.scrollHeight;
-      }, 600);
+      // Bot reply
+      const botMsg = document.createElement("div");
+      botMsg.className = "message bot";
+      botMsg.innerHTML = replies[text] || "I'm still learning. But Master Shreyash will teach me more soon! 💡";
+      chatBox.appendChild(botMsg);
+
+      userInput.value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    function generateReply(input) {
-      const lowercase = input.toLowerCase();
-      if (lowercase.includes('hi') || lowercase.includes('hello')) return "Hi there! 👋";
-      if (lowercase.includes('your name')) return "I'm RBD ChatBot, your assistant!";
-      if (lowercase.includes('how are you')) return "I'm just code, but thanks for asking!";
-      return "I'm still learning. Try asking something else!";
-    }
-  </script>
-
-</body>
-</html>
+    userInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script></body></html>
