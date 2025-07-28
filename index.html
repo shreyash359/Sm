@@ -3,108 +3,137 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gemini Chatbot</title>
+  <title>RBD AI Chatbot</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #121212, #1f1f1f);
+      color: white;
+      margin: 0;
+      padding: 0;
     }
 
-    #chat-box {
-      width: 90%;
+    .chat-container {
       max-width: 600px;
-      height: 500px;
-      border: 1px solid #ccc;
-      background: #fff;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+
+    .chat-box {
+      background: #2c2c2c;
+      padding: 1rem;
+      height: 400px;
       overflow-y: auto;
-      padding: 10px;
-      margin-bottom: 10px;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .message {
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      border-radius: 8px;
+      line-height: 1.4;
     }
 
     .user {
+      background: #4a90e2;
       text-align: right;
-      margin: 5px 0;
-      color: blue;
     }
 
     .bot {
+      background: #4caf50;
       text-align: left;
-      margin: 5px 0;
-      color: green;
     }
 
-    #input-area {
-      width: 90%;
-      max-width: 600px;
+    form {
       display: flex;
+      gap: 0.5rem;
     }
 
-    #input {
+    input[type="text"] {
       flex: 1;
-      padding: 10px;
-      font-size: 16px;
+      padding: 0.75rem;
+      border-radius: 5px;
+      border: none;
+      font-size: 1rem;
     }
 
-    #send-btn {
-      padding: 10px;
-      font-size: 16px;
-      background: #007BFF;
-      color: white;
+    button {
+      padding: 0.75rem 1.2rem;
+      background: #4a90e2;
       border: none;
+      color: white;
+      font-size: 1rem;
+      border-radius: 5px;
       cursor: pointer;
     }
 
-    #send-btn:hover {
-      background: #0056b3;
+    button:hover {
+      background: #357abd;
     }
   </style>
 </head>
 <body>
-  <h2>Gemini AI Chatbot 🤖</h2>
-  <div id="chat-box"></div>
-  <div id="input-area">
-    <input type="text" id="input" placeholder="Type your message..." />
-    <button id="send-btn" onclick="sendMessage()">Send</button>
+  <div class="chat-container">
+    <h1>Chat with RBD</h1>
+    <div class="chat-box" id="chat-box"></div>
+    <form id="chat-form">
+      <input type="text" id="user-input" placeholder="Ask something..." required />
+      <button type="submit">Send</button>
+    </form>
   </div>
 
-  <script type="module">
-    import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const chatForm = document.getElementById('chat-form');
+    const userInput = document.getElementById('user-input');
 
-    const genAI = new GoogleGenerativeAI("AIzaSyBSXNeOX13IqqE0idIZb7vVZMQvB1gQjrw");
+    const API_KEY = "AIzaSyBSXNeOX13IqqE0idIZb7vVZMQvB1gQjrw"; // Replace with your Gemini API key
 
-    async function sendMessageToGemini(userMessage) {
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    chatForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = userInput.value.trim();
+      if (!input) return;
+
+      appendMessage('user', input);
+      userInput.value = '';
+
+      const reply = await getGeminiReply(input);
+      appendMessage('bot', reply);
+    });
+
+    function appendMessage(sender, text) {
+      const msg = document.createElement('div');
+      msg.className = `message ${sender}`;
+      msg.textContent = text;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function getGeminiReply(message) {
+      const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + API_KEY;
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: message }] }]
+        })
+      });
+
+      const data = await response.json();
 
       try {
-        const result = await model.generateContent(userMessage);
-        const response = await result.response;
-        const text = response.text();
-        appendMessage("bot", text);
+        return data.candidates?.[0]?.content?.parts?.[0]?.text || "RBD could not understand that.";
       } catch (err) {
-        appendMessage("bot", "❌ Error: " + err.message);
+        return "Oops! Something went wrong.";
       }
-    }
-
-    function sendMessage() {
-      const userMessage = document.getElementById("input").value.trim();
-      if (userMessage === "") return;
-
-      appendMessage("user", userMessage);
-      sendMessageToGemini(userMessage);
-      document.getElementById("input").value = "";
-    }
-
-    function appendMessage(sender, message) {
-      const chatBox = document.getElementById("chat-box");
-      const messageDiv = document.createElement("div");
-      messageDiv.className = sender;
-      messageDiv.innerText = sender === "user" ? "👤: " + message : "🤖: " + message;
-      chatBox.appendChild(messageDiv);
-      chatBox.scrollTop = chatBox.scrollHeight;
     }
   </script>
 </body>
