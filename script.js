@@ -1,39 +1,43 @@
-const API_KEY = "AIzaSyBSXNeOX13IqqE0idIZb7vVZMQvB1gQjrw";
+const chatForm = document.getElementById("chat-form");
+const userInput = document.getElementById("user-input");
+const chatBox = document.getElementById("chatbox");
 
-async function sendMessage() {
-  const input = document.getElementById("userInput");
-  const message = input.value.trim();
+const API_KEY = "AIzaSyCqBqmrXC6GsVxHCwDVvaMRjMCerJ5yA7A";
+
+chatForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const message = userInput.value.trim();
   if (!message) return;
 
-  addMessage("You", message, "user");
+  appendMessage("user", message);
+  userInput.value = "";
 
-  input.value = "";
+  appendMessage("bot", "Typing...");
 
   try {
-    const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + API_KEY, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: message }] }]
-      })
-    });
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + API_KEY,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: message }] }],
+        }),
+      }
+    );
 
-    const data = await res.json();
-    const botReply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't understand.";
-    addMessage("RBD", botReply, "bot");
-  } catch (err) {
-    console.error(err);
-    addMessage("RBD", "Something went wrong!", "bot");
+    const data = await response.json();
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't understand that.";
+    document.querySelector(".message.bot:last-of-type").textContent = reply;
+  } catch (error) {
+    document.querySelector(".message.bot:last-of-type").textContent = "Error getting response. Please try again.";
   }
-}
+});
 
-function addMessage(sender, text, className) {
-  const chat = document.getElementById("chat");
-  const messageDiv = document.createElement("div");
-  messageDiv.className = "message " + className;
-  messageDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
-  chat.appendChild(messageDiv);
-  chat.scrollTop = chat.scrollHeight;
+function appendMessage(sender, text) {
+  const div = document.createElement("div");
+  div.className = `message ${sender}`;
+  div.textContent = text;
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
