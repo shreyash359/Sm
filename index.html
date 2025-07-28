@@ -1,149 +1,111 @@
-<!DOCTYPE html><html lang="en"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RBD AI Chatbot</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gemini Chatbot</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at top, #0f0f0f 10%, #121212 90%);
-      color: #fff;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }.chat-container {
-  width: 100%;
-  max-width: 420px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  box-shadow: 0 0 20px rgba(0, 255, 200, 0.2);
-  backdrop-filter: blur(10px);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.chat-header {
-  padding: 20px;
-  text-align: center;
-  font-size: 1.4rem;
-  font-weight: 600;
-  background: linear-gradient(to right, #00ffc3, #007cff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.chat-box {
-  padding: 20px;
-  flex-grow: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.message {
-  padding: 12px 16px;
-  border-radius: 16px;
-  max-width: 80%;
-  word-wrap: break-word;
-}
-
-.user {
-  align-self: flex-end;
-  background: #00ffc3;
-  color: #000;
-}
-
-.bot {
-  align-self: flex-start;
-  background: #222;
-  border: 1px solid #00ffc3;
-}
-
-.input-area {
-  display: flex;
-  padding: 12px;
-  background: #111;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-input {
-  flex-grow: 1;
-  padding: 10px 15px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 12px;
-  background: #1a1a1a;
-  color: #fff;
-}
-
-button {
-  margin-left: 10px;
-  padding: 10px 18px;
-  background: #00ffc3;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s;
-}
-
-button:hover {
-  background: #00d2a8;
-}
-
-  </style>
-</head><body>
-  <div class="chat-container">
-    <div class="chat-header">🤖 RBD Chatbot</div>
-    <div class="chat-box" id="chat-box">
-      <div class="message bot">Hello! I'm your AI assistant trained by Master Shreyash. Ask me anything!</div>
-    </div>
-    <div class="input-area">
-      <input type="text" id="user-input" placeholder="Type your message...">
-      <button onclick="sendMessage()">Send</button>
-    </div>
-  </div>  <script>
-    const chatBox = document.getElementById("chat-box");
-    const userInput = document.getElementById("user-input");
-
-    const replies = {
-      "who created you": "I was created by the genius Master Shreyash. 👑",
-      "who is your master": "My master is the great Shreyash, the visionary behind RBD. 🚀",
-      "what is rbd": "RBD stands for Raise Above Daily – a movement led by Master Shreyash.",
-      "what is your name": "I'm RBD Bot, your assistant. Ask me anything!",
-      "help me learn html": "Sure! You can learn HTML from [W3Schools](https://www.w3schools.com/html/) or [MDN HTML Guide](https://developer.mozilla.org/en-US/docs/Web/HTML)",
-      "how to start coding": "Start with HTML, CSS and JavaScript. FreeCodeCamp (https://www.freecodecamp.org/) is a great place to begin!",
-      "hi": "Hello there! 😊 How can I help you today?",
-      "hello": "Hey! I'm here to assist you."
-    };
-
-    function sendMessage() {
-      const text = userInput.value.trim().toLowerCase();
-      if (!text) return;
-
-      // User message
-      const userMsg = document.createElement("div");
-      userMsg.className = "message user";
-      userMsg.innerText = userInput.value;
-      chatBox.appendChild(userMsg);
-
-      // Bot reply
-      const botMsg = document.createElement("div");
-      botMsg.className = "message bot";
-      botMsg.innerHTML = replies[text] || "I'm still learning. But Master Shreyash will teach me more soon! 💡";
-      chatBox.appendChild(botMsg);
-
-      userInput.value = "";
-      chatBox.scrollTop = chatBox.scrollHeight;
+      padding: 20px;
     }
 
-    userInput.addEventListener("keypress", function (e) {
-      if (e.key === "Enter") sendMessage();
-    });
-  </script></body></html>
+    #chat-box {
+      width: 90%;
+      max-width: 600px;
+      height: 500px;
+      border: 1px solid #ccc;
+      background: #fff;
+      overflow-y: auto;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .user {
+      text-align: right;
+      margin: 5px 0;
+      color: blue;
+    }
+
+    .bot {
+      text-align: left;
+      margin: 5px 0;
+      color: green;
+    }
+
+    #input-area {
+      width: 90%;
+      max-width: 600px;
+      display: flex;
+    }
+
+    #input {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    #send-btn {
+      padding: 10px;
+      font-size: 16px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #send-btn:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h2>Gemini AI Chatbot 🤖</h2>
+  <div id="chat-box"></div>
+  <div id="input-area">
+    <input type="text" id="input" placeholder="Type your message..." />
+    <button id="send-btn" onclick="sendMessage()">Send</button>
+  </div>
+
+  <script type="module">
+    import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+
+    const genAI = new GoogleGenerativeAI("AIzaSyBSXNeOX13IqqE0idIZb7vVZMQvB1gQjrw");
+
+    async function sendMessageToGemini(userMessage) {
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+      try {
+        const result = await model.generateContent(userMessage);
+        const response = await result.response;
+        const text = response.text();
+        appendMessage("bot", text);
+      } catch (err) {
+        appendMessage("bot", "❌ Error: " + err.message);
+      }
+    }
+
+    function sendMessage() {
+      const userMessage = document.getElementById("input").value.trim();
+      if (userMessage === "") return;
+
+      appendMessage("user", userMessage);
+      sendMessageToGemini(userMessage);
+      document.getElementById("input").value = "";
+    }
+
+    function appendMessage(sender, message) {
+      const chatBox = document.getElementById("chat-box");
+      const messageDiv = document.createElement("div");
+      messageDiv.className = sender;
+      messageDiv.innerText = sender === "user" ? "👤: " + message : "🤖: " + message;
+      chatBox.appendChild(messageDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
